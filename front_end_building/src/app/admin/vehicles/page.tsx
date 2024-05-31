@@ -64,9 +64,11 @@ export default function Vehicles() {
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent className="!max-w-[800px] !h-fit flex !flex-col !justify-start">
-                <AlertDialogCancel className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-xl !text-white">
-                  X
-                </AlertDialogCancel>
+                <div className="flex justify-end">
+                  <AlertDialogCancel className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-xl !text-white">
+                    X
+                  </AlertDialogCancel>
+                </div>
                 <FormVehicle
                   setVehicles={setVehicles}
                   limit={limit}
@@ -100,9 +102,11 @@ export default function Vehicles() {
                           </TableRow>
                         </AlertDialogTrigger>
                         <AlertDialogContent className="!max-w-[800px] !h-fit flex !flex-col !justify-start">
-                          <AlertDialogCancel className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-xl !text-white">
-                            X
-                          </AlertDialogCancel>
+                          <div className="flex justify-end">
+                            <AlertDialogCancel className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-xl !text-white">
+                              X
+                            </AlertDialogCancel>
+                          </div>
                           <FormVehicle
                             vehicle={vehicle}
                             setVehicles={setVehicles}

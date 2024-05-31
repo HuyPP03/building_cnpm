@@ -64,9 +64,11 @@ export default function Fees() {
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent className="!max-w-[800px] !h-fit flex !flex-col !justify-start">
-                <AlertDialogCancel className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-xl !text-white">
-                  X
-                </AlertDialogCancel>
+                <div className="flex justify-end">
+                  <AlertDialogCancel className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-xl !text-white">
+                    X
+                  </AlertDialogCancel>
+                </div>
                 <FormFee setFees={setFees} limit={limit} page={page} />
               </AlertDialogContent>
             </AlertDialog>
@@ -97,9 +99,11 @@ export default function Fees() {
                         </TableRow>
                       </AlertDialogTrigger>
                       <AlertDialogContent className="!max-w-[800px] !h-fit flex !flex-col !justify-start">
-                        <AlertDialogCancel className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-xl !text-white">
-                          X
-                        </AlertDialogCancel>
+                        <div className="flex justify-end">
+                          <AlertDialogCancel className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-xl !text-white">
+                            X
+                          </AlertDialogCancel>
+                        </div>
                         <FormFee
                           fee={fee}
                           setFees={setFees}

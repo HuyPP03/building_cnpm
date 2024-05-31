@@ -43,6 +43,7 @@ import {
 
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
+import jwt from "jsonwebtoken";
 
 export default function AdminLayout({
   children,
@@ -53,6 +54,7 @@ export default function AdminLayout({
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [pathName, setPathName] = useState("");
+  const [role, setRole] = useState(0);
   const handleSubmit = (e: any) => {
     e.preventDefault();
     router.push(`/manager?name=${searchTerm}`);
@@ -70,6 +72,14 @@ export default function AdminLayout({
   useEffect(() => {
     setPathName(path);
   }, [path]);
+  useEffect(() => {
+    const token = localStorage.getItem("toke`n");
+    if (token) {
+      const user: any = jwt.verify(token, "123456");
+      setRole(user.role);
+    }
+  }, []);
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -93,6 +103,15 @@ export default function AdminLayout({
                 <Home className="h-5 w-5" />
                 Trang chủ quản lý
               </Link>
+              {role === 1 && (
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                >
+                  <BarChartHorizontalBig className="w-5 h-5" />
+                  Trang chủ admin
+                </Link>
+              )}
             </nav>
           </div>
         </div>
