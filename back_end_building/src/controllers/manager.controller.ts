@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { PERMISSION_ERROR, RESPONSE_SUCCESS } from '../constants/constants';
 import * as managerServices from '../services/manager.service';
 import { DataResponse } from '../interfaces/response.interface';
+import { Op } from 'sequelize';
 
 // household
 export const addHousehold = async (
@@ -32,14 +33,23 @@ export const getHouseholds = async (
 	next: NextFunction,
 ) => {
 	try {
-		const limit = Number(req.query.limit) || 10;
-		const page = Number(req.query.page) || 1;
-		const houseNumber = req.query.name ? String(req.query.name) : null;
-		const households = await managerServices.getHouseholds(
-			limit,
-			page,
-			houseNumber,
-		);
+		const limit = req.query.limit;
+		const page = req.query.page;
+		const houseNumber = req.query.name;
+		let data: any = {};
+
+		if (houseNumber) {
+			data.where.houseNumber = {
+				[Op.like]: `%${houseNumber}%`,
+			};
+		}
+		if (limit) {
+			data.limit = Number(limit);
+		}
+		if (page) {
+			data.offset = (Number(page) - 1) * Number(limit);
+		}
+		const households = await managerServices.getHouseholds(data);
 		return res.status(200).json(
 			new DataResponse(
 				0,
@@ -97,6 +107,56 @@ export const deleteHousehold = async (
 };
 
 // fee details
+export const getFeeDetails = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		const { limit, page, status } = req.query;
+		const data: any = { where: {} };
+		if (limit) {
+			data.limit = Number(limit);
+		}
+		if (page) {
+			data.offset = (Number(page) - 1) * Number(limit);
+		}
+		if (status) {
+			data.where.status = status;
+		}
+		const feeDetails = await managerServices.getFeeDetails(data);
+		return res.status(200).json(
+			new DataResponse(
+				0,
+				{
+					feeDetails: feeDetails.rows,
+					count: feeDetails.count,
+					limit,
+					page,
+					status,
+				},
+				'success',
+			),
+		);
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const getFeeDetail = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		const id = Number(req.params.id);
+		const feeDetail = await managerServices.getFeeDetail(id);
+		return res.status(200).json(new DataResponse(0, feeDetail, 'OK'));
+	} catch (error) {
+		next(error);
+	}
+};
+
 export const addFeeDetail = async (
 	req: Request,
 	res: Response,
@@ -159,6 +219,51 @@ export const deleteFeeDetail = async (
 	}
 };
 // vehicle details
+export const getVehicleDetails = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		const { limit, page } = req.query;
+		const data: any = {};
+		if (limit) {
+			data.limit = Number(limit);
+		}
+		if (page) {
+			data.offset = (Number(page) - 1) * Number(limit);
+		}
+		const vehicles = await managerServices.getVehicleDetails(data);
+		return res.status(200).json(
+			new DataResponse(
+				0,
+				{
+					vehicleDetails: vehicles.rows,
+					count: vehicles.count,
+					limit,
+					page,
+				},
+				'OK',
+			),
+		);
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const getVehicleDetail = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		const id = Number(req.params.id);
+		const vehicle = await managerServices.getVehicleDetail(id);
+		return res.status(200).json(new DataResponse(0, vehicle, 'OK'));
+	} catch (error) {
+		next(error);
+	}
+};
 
 export const addVehicleDetail = async (
 	req: Request,
@@ -219,6 +324,20 @@ export const deleteVehicleDetail = async (
 };
 
 //residents
+
+export const getResident = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		const id = Number(req.params.id);
+		const resident = await managerServices.getResident(id);
+		return res.status(200).json(new DataResponse(0, resident, 'OK'));
+	} catch (error) {
+		next(error);
+	}
+};
 
 export const addResident = async (
 	req: Request,

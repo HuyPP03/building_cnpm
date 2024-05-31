@@ -112,6 +112,28 @@ export default function AdminLayout({
                   Trang chủ admin
                 </Link>
               )}
+              <Link
+                href="/manager/fee_details"
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
+                  pathName.includes("fee_details")
+                    ? "bg-muted text-primary"
+                    : "text-muted-foreground"
+                } transition-all hover:text-primary`}
+              >
+                <Home className="h-5 w-5" />
+                Chi phí chi tiết
+              </Link>
+              <Link
+                href="/manager/vehicle_details"
+                className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
+                  pathName.includes("vehicle_details")
+                    ? "bg-muted text-primary"
+                    : "text-muted-foreground"
+                } transition-all hover:text-primary`}
+              >
+                <Home className="h-5 w-5" />
+                Phương tiện chi tiết
+              </Link>
             </nav>
           </div>
         </div>

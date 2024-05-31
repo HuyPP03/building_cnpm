@@ -36,7 +36,7 @@ const Household = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>(null);
   const [fees, setFees] = useState<any[]>([]);
-  const [status, setStatus] = useState<any>("all");
+  const [status, setStatus] = useState<any>("pending");
   useEffect(() => {
     setLoading(true);
     let phoneNumber = localStorage.getItem("phoneNumber");

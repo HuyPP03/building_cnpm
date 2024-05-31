@@ -11,14 +11,19 @@ router.get('/households', managerControllers.getHouseholds);
 router.put('/households/:id', managerControllers.updateHousehold);
 router.delete('/households/:id', managerControllers.deleteHousehold);
 
+router.get('/fee-details', managerControllers.getFeeDetails);
+router.get('/fee-details/:id', managerControllers.getFeeDetail);
 router.post('/fee-details', managerControllers.addFeeDetail);
 router.put('/fee-details/:id', managerControllers.updateFeeDetail);
 router.delete('/fee-details/:id', managerControllers.deleteFeeDetail);
 
+router.get('/vehicle-details', managerControllers.getVehicleDetails);
+router.get('/vehicle-details/:id', managerControllers.getVehicleDetail);
 router.post('/vehicle-details', managerControllers.addVehicleDetail);
 router.put('/vehicle-details/:id', managerControllers.updateVehicleDetail);
 router.delete('/vehicle-details/:id', managerControllers.deleteVehicleDetail);
 
+router.get('/residents/:id', managerControllers.getResident);
 router.post('/residents', managerControllers.addResident);
 router.put('/residents/:id', managerControllers.updateResident);
 router.delete('/residents/:id', managerControllers.deleteResident);

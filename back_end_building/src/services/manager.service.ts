@@ -1,5 +1,7 @@
-import { Op } from 'sequelize';
+import { Vehicle_types } from '../models/vehicle_types.model';
 import { db } from '../loaders/database.loader';
+import { Fees } from '../models/fees.model';
+import { Households } from '../models/households.model';
 
 //household
 export const addHousehold = async (
@@ -17,22 +19,8 @@ export const addHousehold = async (
 	return newHousehold;
 };
 
-export const getHouseholds = async (
-	limit: number,
-	page: number,
-	houseNumber: string | null,
-) => {
-	let query: any = {};
-	if (houseNumber) {
-		query.houseNumber = {
-			[Op.like]: `%${houseNumber}%`,
-		};
-	}
-	const households = await db.households.findAndCountAll({
-		where: query,
-		limit,
-		offset: (page - 1) * limit,
-	});
+export const getHouseholds = async (data: any) => {
+	const households = await db.households.findAndCountAll(data);
 	return households;
 };
 
@@ -69,6 +57,29 @@ export const deleteHousehold = async (id: number) => {
 };
 
 //fee details
+export const getFeeDetails = async (data: any) => {
+	const feeDetails = await db.feeDetails.findAndCountAll({
+		...data,
+		include: [
+			Fees,
+			{
+				model: Households,
+				attributes: ['houseNumber', 'address'],
+			},
+		],
+		order: [['householdId', 'DESC']],
+	});
+	return feeDetails;
+};
+
+export const getFeeDetail = async (id: number) => {
+	const feeDetail = await db.feeDetails.findOne({
+		where: {
+			id,
+		},
+	});
+	return feeDetail;
+};
 export const addFeeDetail = async (
 	householdId: number,
 	feeId: number,
@@ -121,6 +132,29 @@ export const deleteFeeDetail = async (id: number) => {
 };
 
 //vehicle details
+export const getVehicleDetails = async (data: any) => {
+	const vehicleDetails = await db.vehicleDetails.findAndCountAll({
+		...data,
+		include: [
+			Vehicle_types,
+			{
+				model: Households,
+				attributes: ['houseNumber', 'address'],
+			},
+		],
+	});
+	return vehicleDetails;
+};
+
+export const getVehicleDetail = async (id: number) => {
+	const vehicleDetail = await db.vehicleDetails.findOne({
+		where: {
+			id,
+		},
+	});
+	return vehicleDetail;
+};
+
 export const addVehicleDetail = async (
 	householdId: number,
 	vehicleTypeId: number,
@@ -164,6 +198,15 @@ export const deleteVehicleDetail = async (id: number) => {
 	return deletedVehicleDetail;
 };
 //resident
+export const getResident = async (id: number) => {
+	const resident = await db.residents.findOne({
+		where: {
+			id,
+		},
+	});
+	return resident;
+};
+
 export const addResident = async (
 	householdId: number,
 	fullName: string,

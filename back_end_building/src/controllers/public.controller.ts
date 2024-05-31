@@ -1,17 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
 import * as publicServices from '../services/public.service';
 import { DataResponse } from '../interfaces/response.interface';
+import { Op } from 'sequelize';
 
 export const getFees = async (
 	req: Request,
 	res: Response,
 	next: NextFunction,
 ) => {
-	const limit = Number(req.query.limit) || 10;
-	const page = Number(req.query.page) || 1;
-	const type = req.query.type ? String(req.query.type) : null;
 	try {
-		const fees = await publicServices.getFees(limit, page, type);
+		const { limit, page, type } = req.query;
+		const data: any = { where: {} };
+		if (limit) data.limit = Number(limit);
+		if (page) data.offset = (Number(page) - 1) * Number(limit);
+		if (type) data.where.type = { [Op.like]: `%${type}%` };
+		const fees = await publicServices.getFees(data);
 		return res
 			.status(200)
 			.json(
@@ -122,10 +125,12 @@ export const getHousehold = async (
 ) => {
 	try {
 		const id = Number(req.params.id);
-		const phoneNumber = req.query.phoneNumber
-			? String(req.query.phoneNumber)
-			: '';
-		const household = await publicServices.getHousehold(id, phoneNumber);
+		const phoneNumber = req.query.phoneNumber;
+		const where: any = { id };
+		if (phoneNumber) {
+			where.phoneNumber = phoneNumber;
+		}
+		const household = await publicServices.getHousehold(where);
 		return res.status(200).json(new DataResponse(0, household, 'OK'));
 	} catch (error) {
 		next(error);

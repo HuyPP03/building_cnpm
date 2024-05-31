@@ -6,22 +6,8 @@ import { Residents } from '../models/residents.model';
 import { Vehicle_details } from '../models/vehicle_details.model';
 import { Vehicle_types } from '../models/vehicle_types.model';
 
-export const getFees = async (
-	limit: number,
-	page: number,
-	type: string | null,
-) => {
-	const query: any = {};
-	if (type) {
-		query.type = {
-			[Op.like]: `%${type}%`,
-		};
-	}
-	const fees = await db.fees.findAndCountAll({
-		limit,
-		offset: (page - 1) * limit,
-		where: query,
-	});
+export const getFees = async (data: any) => {
+	const fees = await db.fees.findAndCountAll(data);
 	return fees;
 };
 
@@ -78,9 +64,9 @@ export const checkHousehold = async (id: number, phoneNumber: string) => {
 	return false;
 };
 
-export const getHousehold = async (id: number, phoneNumber: string) => {
+export const getHousehold = async (where: any) => {
 	const household = await db.households.findOne({
-		where: { id, phoneNumber },
+		where,
 
 		include: [
 			{
@@ -94,7 +80,7 @@ export const getHousehold = async (id: number, phoneNumber: string) => {
 			},
 			{
 				model: Residents,
-				attributes: ['fullName', 'dateOfBirth'],
+				attributes: ['id', 'fullName', 'dateOfBirth'],
 			},
 			{
 				model: Vehicle_details,
