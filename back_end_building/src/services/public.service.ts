@@ -95,19 +95,17 @@ export const getHousehold = async (where: any) => {
 	return household;
 };
 
-export const getVoluntaryContributions = async () => {
-	const voluntaryContributions = await db.voluntaryContributions.findAll({
-		include: [
-			{
-				model: db.residents,
-				attributes: ['fullName', 'dateOfBirth'],
-			},
-		],
-		group: ['voluntaryContributions.residentId', 'resident.id'],
-		attributes: [
-			'residentId',
-			[db.sequelize.fn('SUM', db.sequelize.col('amount')), 'totalAmount'],
-		],
-	});
+export const getVoluntaryContributions = async (data: any) => {
+	const voluntaryContributions =
+		await db.voluntaryContributions.findAndCountAll({
+			...data,
+			include: [
+				{
+					model: db.residents,
+					attributes: ['fullName', 'dateOfBirth'],
+				},
+			],
+			order: [['createdAt', 'DESC']],
+		});
 	return voluntaryContributions;
 };

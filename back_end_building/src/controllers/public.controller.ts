@@ -143,11 +143,24 @@ export const getVoluntaryContributions = async (
 	next: NextFunction,
 ) => {
 	try {
+		const { limit, page } = req.query;
+		const data: any = { where: {} };
+		if (limit) data.limit = Number(limit);
+		if (page) data.offset = (Number(page) - 1) * Number(limit);
 		const voluntaryContributions =
-			await publicServices.getVoluntaryContributions();
-		return res
-			.status(200)
-			.json(new DataResponse(0, voluntaryContributions, 'OK'));
+			await publicServices.getVoluntaryContributions(data);
+		return res.status(200).json(
+			new DataResponse(
+				0,
+				{
+					voluntaryContributions: voluntaryContributions.rows,
+					count: voluntaryContributions.count,
+					limit,
+					page,
+				},
+				'OK',
+			),
+		);
 	} catch (error) {
 		next(error);
 	}

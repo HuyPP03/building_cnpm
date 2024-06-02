@@ -23,6 +23,7 @@ router.post('/vehicle-details', managerControllers.addVehicleDetail);
 router.put('/vehicle-details/:id', managerControllers.updateVehicleDetail);
 router.delete('/vehicle-details/:id', managerControllers.deleteVehicleDetail);
 
+router.get('/residents', managerControllers.getResidents);
 router.get('/residents/:id', managerControllers.getResident);
 router.post('/residents', managerControllers.addResident);
 router.put('/residents/:id', managerControllers.updateResident);

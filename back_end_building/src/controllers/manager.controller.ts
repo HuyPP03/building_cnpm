@@ -324,7 +324,37 @@ export const deleteVehicleDetail = async (
 };
 
 //residents
-
+export const getResidents = async (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	try {
+		const { limit, page } = req.query;
+		const data: any = {};
+		if (limit) {
+			data.limit = Number(limit);
+		}
+		if (page) {
+			data.offset = (Number(page) - 1) * Number(limit);
+		}
+		const residents = await managerServices.getResidents(data);
+		return res.status(200).json(
+			new DataResponse(
+				0,
+				{
+					residents: residents.rows,
+					count: residents.count,
+					limit,
+					page,
+				},
+				'OK',
+			),
+		);
+	} catch (error) {
+		next(error);
+	}
+};
 export const getResident = async (
 	req: Request,
 	res: Response,

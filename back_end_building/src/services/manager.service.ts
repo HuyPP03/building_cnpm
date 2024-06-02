@@ -198,6 +198,10 @@ export const deleteVehicleDetail = async (id: number) => {
 	return deletedVehicleDetail;
 };
 //resident
+export const getResidents = (data: any) => {
+	const residents = db.residents.findAndCountAll(data);
+	return residents;
+};
 export const getResident = async (id: number) => {
 	const resident = await db.residents.findOne({
 		where: {
