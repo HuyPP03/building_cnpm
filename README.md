@@ -9,5 +9,5 @@
 ## vào folder front_end_buiding
 ### npm i
 ### npm run dev
-### nãy ta đã tạo 1 tài khoản admin như sau ( admin@gamil.com MK: admin123456) => đăng nhập vào
+### nãy ta đã tạo 1 tài khoản admin như sau ( admin@gmail.com MK: admin123456) => đăng nhập vào
 ### click vào avatar để vào trang admin tạo các thông tin khác
